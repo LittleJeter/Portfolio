@@ -99,6 +99,26 @@ page: 18 built-in plus the two user-authored hunts the demo workspace ships with
 
 ---
 
+## One hunt, seven languages
+
+![The same Encoded / Base64 PowerShell hunt rendered as CrowdStrike LogScale, Cortex XSIAM XQL, MS Sentinel KQL, Defender XDR advanced hunting KQL, Elastic ES|QL, Google SecOps YARA-L and Splunk SPL, each with its own lint result](screenshots/otter-03-seven-platforms.png)
+
+One hunt — *Encoded / Base64 PowerShell Execution*, T1059.001 — as the platform rail steps through
+all seven targets. Nothing is retyped between them: each is the same hunt definition rendered
+through that platform's dialect, which is the whole reason the tool exists.
+
+They are not transliterations of one another. Elastic gets a `LIMIT 200`, Google SecOps gets a real
+YARA-L `rule … meta / events / condition` block with `nocase` regex, XSIAM lowercases the command line before matching it, and Splunk ends in a `table` rather than a `project`. The field names
+differ because the schemas differ — `ImageFileName` on CrowdStrike, `FileName` on Defender,
+`action_process_image_name` on XSIAM, `process.name` on Elastic.
+
+This is also the clearest place to see the linter's two severities. Three of the seven carry
+`· 1 note` for having no explicit lookback; four carry none. **Not one carries a warning.** That is
+the zero-warnings claim above, visible per platform rather than asserted — and the note is rendered
+in muted grey with an `ℹ`, never the amber an actual warning gets.
+
+---
+
 ## Coverage with its gaps
 
 ![ATT&CK coverage by tactic with per-technique chips, a Discovery column reading 0 / no hunt, and a priority-gaps row naming three uncovered techniques](screenshots/otter-05-attack-coverage.png)
